@@ -27,3 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Output Files ###
+permutations-from-1-to-*.txt

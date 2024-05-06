@@ -1,14 +1,17 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numbers = {1, 2, 3, 4, 5, 6};
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7};
         ArrayList<ArrayList<Integer>> allPermutations = getPermutations(numbers);
         printAllPermutations(allPermutations);
-//        String fileName = "permutations-from-1-to-" + String.valueOf(numbers.length);
-//        writeAllPermutationsToFile(allPermutations, fileName);
+        String fileName = "permutations-from-1-to-" + String.valueOf(numbers.length) + ".txt";
+        writeAllPermutationsToFile(allPermutations, fileName);
     }
 
     private static ArrayList<ArrayList<Integer>> getPermutations(int[] arr) {
@@ -98,6 +101,20 @@ public class Main {
             System.out.println("d-squared = " + dSquared);
             // Print a line of whitespace
             System.out.println();
+        }
+    }
+
+    private static void writeAllPermutationsToFile(ArrayList<ArrayList<Integer>> allPermutations, String fileName) {
+        ArrayList<Integer> orginalPermutation = allPermutations.getFirst();
+        Collections.sort(allPermutations, Comparator.comparingInt(p -> getDSquared(orginalPermutation, p)));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (int i = 0; i < allPermutations.size(); i++) {
+                writer.write("Permutation " + (i + 1) + ":\n");
+                writer.write(allPermutations.get(i).toString() + "\n");
+                writer.write("d-squared = " + getDSquared(allPermutations.get(0), allPermutations.get(i)) + "\n\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 }
