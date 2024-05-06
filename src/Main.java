@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numbers = {1, 2, 3, 4};
+        int[] numbers = {1, 2, 3, 4, 5, 6};
         ArrayList<ArrayList<Integer>> allPermutations = getPermutations(numbers);
         printAllPermutations(allPermutations);
 //        String fileName = "permutations-from-1-to-" + String.valueOf(numbers.length);
@@ -79,10 +81,13 @@ public class Main {
 
     private static void printAllPermutations(ArrayList<ArrayList<Integer>> allPermutations) {
         /*
-          Prints all permutations of the given array list in order.
+          Prints all permutations of the given array list in order of d-squared value (ascending).
 
           @param allPermutations an array list of all the permutations for the numbers 1 to `n`
          */
+        // Sort the allPermutations list based on the d-squared value of each permutation (in ascending order)
+        ArrayList<Integer> orginalPermutation = allPermutations.getFirst();
+        Collections.sort(allPermutations, Comparator.comparingInt(p -> getDSquared(orginalPermutation, p)));
         for (int i = 0; i < allPermutations.size(); i++) {
             // Print which permutation this is
             System.out.println(i + 1);
