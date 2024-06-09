@@ -3,11 +3,27 @@ import java.util.Comparator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numbers = {1, 2, 3, 4, 5, 6, 7};
-        int[][] allPermutations = getPermutations(numbers);
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+
+        int maxDSquaredValue = getMaxDSquaredValue(numbers.length);
+        Map<Integer, Integer> dSquaredMap = new HashMap<>();
+        for (int i = 0; i <= maxDSquaredValue; i+=2) {
+            dSquaredMap.put(i, 0);
+        }
+        // Run through every permutation of `numbers`, find its d-squared value, and
+        // increment the relevant value in the HashMap by 1
+        fillOutDSquaredHashMap(dSquaredMap, numbers);
+        String fileName = "occurrences-of-d-squared-values-from-1-to-" + numbers.length + ".txt";
+        writeHashMapToFile(dSquaredMap, fileName);
+
+//        int[][] allPermutations = getPermutations(numbers);
 
 
 //        printAllPermutations(allPermutations);
@@ -16,9 +32,70 @@ public class Main {
 
 
         // Sort the array by d-squared value in ascending order
-        Arrays.sort(allPermutations, Comparator.comparingInt(p -> getDSquared(allPermutations[0], p)));
-        String fileName = "d-squared-values-from-1-to-" + numbers.length + ".txt";
-        writeAllDSquaredValuesToFile(allPermutations, fileName);
+//        Arrays.sort(allPermutations, Comparator.comparingInt(p -> getDSquared(allPermutations[0], p)));
+//        String fileName = "d-squared-values-from-1-to-" + numbers.length + ".txt";
+//        writeAllDSquaredValuesToFile(allPermutations, fileName);
+    }
+
+    private static int getMaxDSquaredValue(int num) {
+        return (num + 1) * num * (num - 1) / 3;
+    }
+
+    private static void fillOutDSquaredHashMap(Map<Integer, Integer> hashMap, int[] nums) {
+        // Get each permutation one by one, find its d-squared value, and increment the
+        // relevant value in the HashMap
+        int[] originalOrderNums = nums.clone();
+        findPermutations(nums, permutation -> {
+            int[] currentPermutation = new int[nums.length];
+            int index = 0;
+            // Process each permutation here
+            for (int num : permutation) {
+                currentPermutation[index++] = num;
+            }
+            int dSquaredValue = getDSquared(originalOrderNums, currentPermutation);
+            hashMap.put(dSquaredValue, hashMap.getOrDefault(dSquaredValue, 0) + 1);
+        });
+    }
+
+    private static void findPermutations(int[] arr, Consumer<int[]> consumer) {
+        /*
+          Generates and processes all permutations of the given array using the provided consumer.
+
+          @param arr the input array
+          @param consumer the consumer to process each permutation
+         */
+        findPermutationsUtil(arr, 0, consumer);
+    }
+
+    private static void findPermutationsUtil(int[] arr, int index, Consumer<int[]> consumer) {
+        /*
+          Recursively generates all permutations of the given array and processes each one using the provided consumer.
+
+          @param arr   the input array
+          @param index the current index being processed
+          @param consumer the consumer to process each permutation
+         */
+        if (index == arr.length) {
+            consumer.accept(arr.clone());
+            return;
+        }
+
+        for (int i = index; i < arr.length; i++) {
+            swap(arr, index, i);
+            findPermutationsUtil(arr, index + 1, consumer);
+            swap(arr, index, i);
+        }
+    }
+
+    private static void writeHashMapToFile(Map<Integer, Integer> hashMap, String fileName) {
+        TreeMap<Integer, Integer> sortedMap = new TreeMap<>(hashMap);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Map.Entry<Integer, Integer> entry : sortedMap.entrySet()) {
+                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
     }
 
     private static int[][] getPermutations(int[] arr) {
