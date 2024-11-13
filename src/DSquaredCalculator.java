@@ -49,13 +49,7 @@ public class DSquaredCalculator {
         // and increment the relevant value in the hash table
         int[] originalOrderNums = nums.clone();
         findPermutations(nums, permutation -> {
-            int[] currentPermutation = new int[nums.length];
-            int index = 0;
-            // Process each permutation here
-            for (int num : permutation) {
-                currentPermutation[index++] = num;
-            }
-            int dSquaredValue = getDSquared(originalOrderNums, currentPermutation);
+            int dSquaredValue = getDSquared(originalOrderNums, permutation);
             hashMap.put(dSquaredValue, hashMap.get(dSquaredValue) + 1);
         });
     }
