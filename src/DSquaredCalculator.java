@@ -81,19 +81,6 @@ public class DSquaredCalculator {
         }
     }
 
-    private void writeMapToFile(Map<Integer, Integer> hashMap, String fileName) {
-        // Write the key-value pairs of the given hash table to a file in the
-        // form `key,value` with one key-value pair per line
-        TreeMap<Integer, Integer> sortedMap = new TreeMap<>(hashMap);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (Map.Entry<Integer, Integer> entry : sortedMap.entrySet()) {
-                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
-    }
-
     private void swap(int[] arr, int i, int j) {
         // Swap the elements at the given indices in the array
         int temp = arr[i];
@@ -110,5 +97,18 @@ public class DSquaredCalculator {
             dSquared += difference * difference;
         }
         return dSquared;
+    }
+
+    private void writeMapToFile(Map<Integer, Integer> hashMap, String fileName) {
+        // Write the key-value pairs of the given hash table to a file in the
+        // form `key,value` with one key-value pair per line
+        TreeMap<Integer, Integer> sortedMap = new TreeMap<>(hashMap);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Map.Entry<Integer, Integer> entry : sortedMap.entrySet()) {
+                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
     }
 }
