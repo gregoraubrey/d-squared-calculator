@@ -30,3 +30,6 @@ bin/
 
 ### Output Files ###
 *.txt
+
+### Class Files ###
+*.class
