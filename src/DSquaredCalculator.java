@@ -8,12 +8,14 @@ import java.util.TreeMap;
 
 public class DSquaredCalculator {
     private final int[] numbers;
+    private final String fileName;
 
-    public DSquaredCalculator(int size) {
+    public DSquaredCalculator(int size, String fileName) {
         this.numbers = new int[size];
         for (int i = 0; i < size; i++) {
             this.numbers[i] = i + 1;
         }
+        this.fileName = fileName;
     }
 
     public void calculateAndWriteToFile() {
@@ -25,7 +27,6 @@ public class DSquaredCalculator {
         // Run through every permutation of `numbers`, find its d-squared value, and
         // increment the relevant value in the HashMap by 1
         fillOutDSquaredMap(dSquaredMap, numbers);
-        String fileName = "occurrences-of-d-squared-values-from-1-to-" + numbers.length + ".txt";
         writeHashMapToFile(dSquaredMap, fileName);
     }
 
@@ -117,10 +118,5 @@ public class DSquaredCalculator {
             dSquared += difference * difference;
         }
         return dSquared;
-    }
-
-    public static void main(String[] args) {
-        DSquaredCalculator calculator = new DSquaredCalculator(6);
-        calculator.calculateAndWriteToFile();
     }
 }
