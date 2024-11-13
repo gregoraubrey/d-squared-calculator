@@ -29,6 +29,4 @@ bin/
 .DS_Store
 
 ### Output Files ###
-permutations-from-1-to-*.txt
-d-squared-values-from-1-to-*.txt
-occurrences-of-d-squared-values-from-1-to-*.txt
+*.txt
