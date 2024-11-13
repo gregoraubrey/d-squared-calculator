@@ -48,30 +48,30 @@ public class DSquaredCalculator {
         // Get each permutation one by one, find the d-squared value,
         // and increment the relevant value in the hash table
         int[] originalOrderNums = nums.clone();
-        findPermutations(nums, permutation -> {
+
+        Consumer<int[]> consumer = permutation -> {
             int dSquaredValue = getDSquared(originalOrderNums, permutation);
             hashMap.put(dSquaredValue, hashMap.get(dSquaredValue) + 1);
-        });
+        };
+
+        findPermutations(nums, 0, consumer);
     }
 
-    private void findPermutations(int[] arr, Consumer<int[]> consumer) {
-        // Generate and process all permutations of the given array
-        // using the provided consumer
-        findPermutationsUtil(arr, 0, consumer);
-    }
-
-    private void findPermutationsUtil(int[] arr, int index, Consumer<int[]> consumer) {
+    private void findPermutations(int[] arr, int currentIndex, Consumer<int[]> consumer) {
         // Recursively generate all permutations of the given array
-        // and process each one using the provided consumer
-        if (index == arr.length) {
+        // and in each case pass the permutation to the consumer to
+        // be processed
+        if (currentIndex == arr.length) {
+            // When a complete permutation is formed, pass that
+            // order to the consumer for processing
             consumer.accept(arr.clone());
             return;
         }
 
-        for (int i = index; i < arr.length; i++) {
-            swap(arr, index, i);
-            findPermutationsUtil(arr, index + 1, consumer);
-            swap(arr, index, i);
+        for (int i = currentIndex; i < arr.length; i++) {
+            swap(arr, currentIndex, i);
+            findPermutations(arr, currentIndex + 1, consumer);
+            swap(arr, currentIndex, i);
         }
     }
 
