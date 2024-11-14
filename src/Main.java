@@ -29,7 +29,7 @@ public class Main {
         DSquaredCalculator calculator = new DSquaredCalculator(n, fileName);
         calculator.calculateAndWriteToFile();
 
-        String filePath = System.getProperty("user.dir") + "/occurrences-of-d-squared-values-from-1-to-" + n + ".txt";
+        String filePath = System.getProperty("user.dir") + "/d-squared-from-1-to-" + n + ".txt";
         System.out.println("The d-squared values have been calculated and written to disk: " + filePath);
     }
 }
